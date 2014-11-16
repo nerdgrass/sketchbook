@@ -5,8 +5,37 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     sass = require('gulp-sass');
 
+// Livereload crap
+var embedlr = require('gulp-embedlr'),
+    refresh = require('gulp-livereload'),
+    lrserver = require('tiny-lr')(),
+    express = require('express'),
+    livereload = require('connect-livereload'),
+    livereloadport = 35729,
+    serverport = 5000;
+// Set up an express server (but not starting it yet)
+var server = express();
+// Add live reload
+server.use(livereload({port: livereloadport}));
+// Use our 'dist' folder as rootfolder
+server.use(express.static('./dist'));
+// Because I like HTML5 pushstate .. this redirects everything back to our index.html
+server.all('/*', function(req, res) {
+    res.sendfile('index.html', { root: 'dist' });
+});
+
 // Primary run task
 gulp.task('default', [], function() {
+  // Start webserver
+  server.listen(serverport);
+  // Start live reload
+  lrserver.listen(livereloadport);
+  // Run the watch task, to keep taps on changes
+  gulp.start('watch');
+});
+
+// Watch task
+gulp.task('watch', ['lint'], function(){
   // Watch scripts
   gulp.watch(['app/scripts/*.js', 'app/scripts/**/*.js'],[
     'lint',
@@ -28,15 +57,14 @@ gulp.task('default', [], function() {
 
 // Browserify task
 gulp.task('browserify', function() {
-  // Single point of entry (make sure not to src ALL your files, browserify will figure it out for you)
-  gulp.src(['app/scripts/app.js'])
-  .pipe(browserify({
+  gulp.src(['app/scripts/app.js'])//                Single point of entry (make sure not to src ALL your files, browserify will figure it out for you)
+
+  .pipe(browserify({//                              Browserify wizardry
     insertGlobals: true,
     debug: true
   }))
-  // Bundle to a single file
-  .pipe(concat('bundle.js'))
-  // Output it to our dist folder
+  
+  .pipe(concat('app.js'))//                      Bundle to a single file
   .pipe(gulp.dest('dist/scripts'));
 });
 
@@ -46,6 +74,19 @@ gulp.task('lint', function() {
   .pipe(jshint())
   // You can look into pretty reporters as well, but that's another story
   .pipe(jshint.reporter('default'));
+});
+
+// Styles task
+gulp.task('styles', function() {
+  gulp.src('app/styles/app.scss')
+    .pipe(sass({
+      sourcemap: true,
+      sourcemapPath: '../scss'
+    }))
+    .on('error', function(err) {
+      console.log(err.message);
+    })
+    .pipe(gulp.dest('dist/styles'))
 });
 
 // HTML tasks

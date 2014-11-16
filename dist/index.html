@@ -1,11 +1,16 @@
 <!doctype html>
-<html lang="en" ng-app="myApp">
+<html lang="en" ng-app="sketchbook">
   <head>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <title>My Awesome App</title>
+    <link rel="stylesheet" type="text/css" href="styles/app.css">  
   </head>
-  <body ng-controller='WelcomeCtrl'>
-    <h1>My Awesome App</h1>
-    <p>{{testVar}}</p>
-    <script src="/js/bundle.js"></script>
+  <body>
+    <div ng-controller='HelloCtrl'>
+      <h1>My Awesome App</h1>
+      <p>{{test}}</p>
+    </div>
+    <!-- Scripts -->
+    <script src="/scripts/app.js"></script>
   </body>
 </html>
