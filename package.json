@@ -1,0 +1,15 @@
+{
+  "name": "sketchbook",
+  "version": "0.0.0",
+  "description": "A sketchbook for my various experiments with browser-based art",
+  "main": "app.js",
+  "dependencies": {
+    "gulp": "^3.8.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alex Boerstler (@nerdgrass)",
+  "license": "MIT"
+}
