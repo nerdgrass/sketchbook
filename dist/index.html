@@ -5,11 +5,11 @@
     <title>My Awesome App</title>
     <link rel="stylesheet" type="text/css" href="styles/app.css">  
   </head>
-  <body>
-    <div ng-controller='HelloCtrl'>
-      <h1>My Awesome App</h1>
-      <p>{{test}}</p>
+  <body ng-controller="MainCtrl">
+    <div ui-view>
+    <i>Loadin'</i>
     </div>
+
     <!-- Scripts -->
     <script src="/scripts/app.js"></script>
   </body>
