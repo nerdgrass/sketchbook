@@ -6,7 +6,14 @@
   "dependencies": {
     "gulp": "^3.8.10"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browserify": "^6.3.2",
+    "gulp-browserify": "^0.5.0",
+    "gulp-concat": "^2.4.1",
+    "gulp-jshint": "^1.9.0",
+    "gulp-sass": "^1.1.0",
+    "gulp-util": "^3.0.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
