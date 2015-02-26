@@ -12,15 +12,14 @@ var sin30 = Math.pow(3,1/2)/2;
 var cos30 = .5;
 
 // Min circumradius
-var minR = 5;
-
+var minR = 10;
 
 //adds svg & g elements to page so zooming will work
 var svg = d3.select("#chart")
   .append("svg:svg")
     .attr("width", width)
     .attr("height", height)
-    .attr("fill", '#0F1E36')
+    .attr("fill", 'transparent')
     .attr("pointer-events", "all")
   .append('svg:g')
     .call(d3.behavior.zoom().on("zoom", redraw))
@@ -38,13 +37,44 @@ function redraw() {
       + " scale(" + d3.event.scale + ")");
 }
 
+// 1st palettes - dark blue bg, misty redrocks, purplepink, cave story palettes
+var metapalette = [
+  ["CCDEF9", "8BA8D5", "204274","325FA4","193259"],
+  ["3F3337", "574751","574751","B8BDDA","2E688D","34A4C7"],
+  ["27171A","412B31","735D6A","81C1C2","E7F2F2"],
+  ["7E3674","BB418C","FF95BC","1C0053","0E0041"],
+  ["74152C","2B0D1E","190915","B89FB5","D0E1FD"]
+];
+// monochrome dark metapalette
+// var metapalette = [
+//   ["494949", "3A3A3A","2B2B2B","4C4C4C","1C1E1D","191919"],
+//   ["2E3332", "292D2C", "212322","202322","191C1B"],
+// ];
+
+// Apple Color Palette
+// var metapalette = [
+//   ["FF2D55"],//pink
+//   ["FF9500"],//orange
+//   ["FFCC00"],//gold
+//   ["5AC8FA"],//light blue
+//   ["007AFF"],//dark blue
+//   ["4CD964"],//green
+//   // ["FF3B30"],//red
+//   ["8E8E93"]//gray
+// ];
+
+// Random palette
+var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
+// fixed palette
+// var palette = metapalette;
 
 // triangle centered at (cx, cy) with circumradius r
 function addTriangleUp(cx, cy, r){
   var strokeOpacity = 1;
-  var strokeWidth = 3
-  var fillOpacity = 1
-  var palette = ["CCDEF9", "8BA8D5", "204274","325FA4","193259"];
+  var strokeWidth = 3;
+  var fillOpacity = .2;
+
+  var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
   var fillColor = '#' + palette[Math.floor(Math.random() * palette.length)];
 
   if ( r > 80 ) {
@@ -54,31 +84,31 @@ function addTriangleUp(cx, cy, r){
   } else if ( r > 60 ) {
     strokeOpacity = .8;
     strokeWidth = 7;
-    fillOpacity = .3
+    fillOpacity = .45
   } else if ( r > 40 ) {
     strokeOpacity = .7; 
     strokeWidth = 5;
-    fillOpacity = .2
+    fillOpacity = .4
   } else if ( r > 20 ) {
     strokeOpacity = .6; 
     strokeWidth = 4.5
-    fillOpacity = .1
+    fillOpacity = .35
   } else if (r > 15 ) {
     strokeOpacity = .5;
     strokeWidth = 2.5
-    fillOpacity = .08
+    fillOpacity = .3
   }else if (r > 10 ) {
     strokeOpacity = .4;
     strokeWidth = 2.2
-    fillOpacity = .05
+    fillOpacity = .25
   }else if (r > 5 ) {
     strokeOpacity = .3;
     strokeWidth = 1.5
-    fillOpacity = .03
+    fillOpacity = .2
   }else {
     strokeOpacity = .5
     strokeWidth = 1
-    fillOpacity = .01
+    fillOpacity = .15
   }
   
   var lol = function(d){
@@ -117,11 +147,12 @@ function addTriangleUp(cx, cy, r){
 
 // Upside down sierpinski pattern triangle
 function addTriangleDown(cx, cy, r){
-  var palette = ["CCDEF9", "8BA8D5", "204274","325FA4","193259"];
+
   var fillColor = '#' + palette[Math.floor(Math.random() * palette.length)];
   var strokeOpacity = 1;
   var strokeWidth = 3
-  var fillOpacity = 1
+  var fillOpacity = .2
+
   if ( r > 80 ) {
     strokeOpacity = .9;
     strokeWidth = 10;
@@ -155,6 +186,7 @@ function addTriangleDown(cx, cy, r){
     strokeWidth = 1
     fillOpacity = .15
   }
+
   var lol = function(d){
     
     addTriangleUp(cx, cy, r/2)
