@@ -1,0 +1,24 @@
+{
+  "name": "sketchbook",
+  "version": "0.0.1",
+  "description": "This branch catalogs my efforts with generative art based around Sierpinski Triangles using d3. This is really a proof of concept for future generative art ideas - Sierpinski triangles seemed to be the most common (and versitile) fractal pattern that was very well documented. A heaping big chunk of my inspiration for this project was [Andy Gilmore](http://crowquills.com/) and my desire to automate an artistic process that would create abstract patterns with aesthetic value.",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-sass": "^1.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nerdgrass/sketchbook.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nerdgrass/sketchbook/issues"
+  },
+  "homepage": "https://github.com/nerdgrass/sketchbook"
+}
