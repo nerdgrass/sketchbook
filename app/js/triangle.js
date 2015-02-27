@@ -1,18 +1,24 @@
-var width  =  document.getElementById('chart').offsetWidth
+'use strict';
+
+var width  =  document.getElementById('chart').offsetWidth;
 var height =  (window.innerHeight || html.clientHeight    || body.clientHeight    || screen.availHeight);
 
 // set triangle size smaller to make room for other triangles
-var triHeight = height/2;
-var triWidth = width/2;
+var triHeight = height / 2;
+var triWidth = width / 2;
 
 // triangle side length
-var s =  Math.min(triHeight, triWidth);   
+var sideLength = Math.min(triHeight, triWidth);   
 
-var sin30 = Math.pow(3,1/2)/2;
-var cos30 = .5;
+var sin30 = Math.pow(3, 1/2) / 2;
+var cos30 = 0.5;
+
+// Directions
+var down = 180;
+var up = 0;
 
 // Min circumradius
-var minR = 10;
+var cRadiusMin = 3;
 
 //adds svg & g elements to page so zooming will work
 var svg = d3.select("#chart")
@@ -25,26 +31,14 @@ var svg = d3.select("#chart")
     .call(d3.behavior.zoom().on("zoom", redraw))
   .append('svg:g');
 
-svg.append('svg:rect')
-    .attr('width', width)
-    .attr('height', height)
-    
-
-function redraw() {
-  console.log("here", d3.event.translate, d3.event.scale);
-  svg.attr("transform",
-      "translate(" + d3.event.translate + ")"
-      + " scale(" + d3.event.scale + ")");
-}
-
-// 1st palettes - dark blue bg, misty redrocks, purplepink, cave story palettes
 var metapalette = [
-  ["CCDEF9", "8BA8D5", "204274","325FA4","193259"],
-  ["3F3337", "574751","574751","B8BDDA","2E688D","34A4C7"],
-  ["27171A","412B31","735D6A","81C1C2","E7F2F2"],
-  ["7E3674","BB418C","FF95BC","1C0053","0E0041"],
-  ["74152C","2B0D1E","190915","B89FB5","D0E1FD"]
+  [ "CCDEF9", "8BA8D5", "204274", "325FA4", "193259" ],
+  [ "3F3337", "574751", "574751", "B8BDDA", "2E688D", "34A4C7" ],
+  [ "27171A", "412B31", "735D6A", "81C1C2", "E7F2F2" ],
+  [ "7E3674", "BB418C", "FF95BC", "1C0053", "0E0041" ],
+  [ "74152C", "2B0D1E", "190915", "B89FB5", "D0E1FD" ]
 ];
+
 // monochrome dark metapalette
 // var metapalette = [
 //   ["494949", "3A3A3A","2B2B2B","4C4C4C","1C1E1D","191919"],
@@ -65,178 +59,104 @@ var metapalette = [
 
 // Random palette
 var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
-// fixed palette
-// var palette = metapalette;
 
-// triangle centered at (cx, cy) with circumradius r
-function addTriangleUp(cx, cy, r){
-  var strokeOpacity = 1;
-  var strokeWidth = 3;
-  var fillOpacity = .2;
+// triangle centered at (centerX, centerY) with circumradius cRadius
+function addTriangle( centerX, centerY, cRadius, rotation ){
+  var strokeOpacity = cRadius/100;
+  var fillOpacity = cRadius/100;
+
+  var pointsDown = 
+    ( centerX )                   +','+   ( centerY + cRadius )        +' '+ 
+    ( centerX - cRadius*sin30 )   +','+   ( centerY - cRadius*cos30 )  +' '+
+    ( centerX + cRadius*sin30 )   +','+   ( centerY - cRadius*cos30 );
+  var pointsUp = 
+    ( centerX )                  +','+   ( centerY - cRadius )         +' '+ 
+    ( centerX - cRadius*sin30 )  +','+   ( centerY + cRadius*cos30 )   +' '+
+    ( centerX + cRadius*sin30 )  +','+   ( centerY + cRadius*cos30 );
 
   var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
   var fillColor = '#' + palette[Math.floor(Math.random() * palette.length)];
 
-  if ( r > 80 ) {
-    strokeOpacity = .9;
-    strokeWidth = 10;
-    fillOpacity = .5
-  } else if ( r > 60 ) {
-    strokeOpacity = .8;
-    strokeWidth = 7;
-    fillOpacity = .45
-  } else if ( r > 40 ) {
-    strokeOpacity = .7; 
-    strokeWidth = 5;
-    fillOpacity = .4
-  } else if ( r > 20 ) {
-    strokeOpacity = .6; 
-    strokeWidth = 4.5
-    fillOpacity = .35
-  } else if (r > 15 ) {
-    strokeOpacity = .5;
-    strokeWidth = 2.5
-    fillOpacity = .3
-  }else if (r > 10 ) {
-    strokeOpacity = .4;
-    strokeWidth = 2.2
-    fillOpacity = .25
-  }else if (r > 5 ) {
-    strokeOpacity = .3;
-    strokeWidth = 1.5
-    fillOpacity = .2
-  }else {
-    strokeOpacity = .5
-    strokeWidth = 1
-    fillOpacity = .15
-  }
-  
-  var lol = function(d){
-    addTriangleDown(cx,             cy,             r/2)
-    addTriangleUp(  cx,             cy - r/2,       r/2);     
-    addTriangleUp(  cx + r*sin30/2, cy + r*cos30/2, r/2);     
-    addTriangleUp(  cx - r*sin30/2, cy + r*cos30/2, r/2);
-
-    d3.select(this).on('mouseover', function(){});
-    d3.select(this).on('click', function(){
-      addTriangleUp(cx, cy, r);});
+  // Handles rotation value
+  var translateRotation = function( rotation ) {
+    // Right now, function only accepts 0 or 180 degrees rotation. Add full support in later.
+    if ( rotation === 0 ) {
+      return pointsUp;
+    } else if ( rotation === 180 ) {
+      return pointsDown;
+    } else {
+      console.log('Translate Rotation: invalid rotation value: ' + rotation );
+    }
   };
 
-  if (r > minR) {
+  if (cRadius > cRadiusMin ) {
     svg.append("g")
     .append('polygon')
-      .each( lol)
+      .each(
+        function(){
+          if ( rotation === 0 ) {
+            addTriangle( centerX,                     centerY,                      cRadius/2, down );
+            addTriangle( centerX,                     centerY - cRadius/2,          cRadius/2, up   );     
+            addTriangle( centerX + cRadius * sin30/2, centerY + cRadius * cos30/2,  cRadius/2, up   );     
+            addTriangle( centerX - cRadius * sin30/2, centerY + cRadius*cos30/2,    cRadius/2, up   );
+          } else if ( rotation === 180 ) {
+            addTriangle(  centerX,                    centerY,                    cRadius/2, up   )
+            addTriangle(  centerX,                    centerY + cRadius/2,        cRadius/2, down );     
+            addTriangle(  centerX + cRadius*sin30/2,  centerY - cRadius*cos30/2,  cRadius/2, down );     
+            addTriangle(  centerX - cRadius*sin30/2,  centerY - cRadius*cos30/2,  cRadius/2, down );
+          } else {
+            console.log('Add Triangle: invalid rotation: ' + rotation );
+          }
+
+          d3.select(this).on('mouseover', function(){});
+          d3.select(this).on('click', function(){
+            addTriangle( centerX, centerY, cRadius, rotation );
+          });
+        }
+      )
       .attr('fill', 'white')
-      .attr('points', (cx)  +','+   (cy)  +' '+ 
-                      (cx)  +','+   (cy)  +' '+
-                      (cx)  +','+   (cy))
+      .attr('points', ( centerX )  +','+   ( centerY )  +' '+ 
+                      ( centerX )  +','+   ( centerY )  +' '+
+                      ( centerX )  +','+   ( centerY )
+      )
       .transition()
       .duration(600)
       .delay(10)
         .attr('fill', fillColor)
-        .attr('fill-opacity', fillOpacity)
-        .attr('style', 'stroke: white; stroke-width:'+ 0)
-        .attr('stroke-opacity', strokeOpacity)
-        .attr('points', (cx)      +','+   (cy-r)      +' '+ 
-                        (cx-r*sin30)  +','+   (cy + r*cos30)  +' '+
-                        (cx+r*sin30)  +','+   (cy + r*cos30))
-  }else {
-    // strokeOpacityUp = strokeOpacityUp+.001
+        .attr('fill-opacity', fillOpacity )
+        .attr('style', 'stroke: white; stroke-width:' + 0 )
+        .attr('stroke-opacity', strokeOpacity )
+        .attr('points', translateRotation( rotation ) );
+  } else {
+    console.log('circumradius lower than minimum');
   }
-}
-
-// Upside down sierpinski pattern triangle
-function addTriangleDown(cx, cy, r){
-
-  var fillColor = '#' + palette[Math.floor(Math.random() * palette.length)];
-  var strokeOpacity = 1;
-  var strokeWidth = 3
-  var fillOpacity = .2
-
-  if ( r > 80 ) {
-    strokeOpacity = .9;
-    strokeWidth = 10;
-    fillOpacity = .5
-  } else if ( r > 60 ) {
-    strokeOpacity = .8;
-    strokeWidth = 7;
-    fillOpacity = .45
-  } else if ( r > 40 ) {
-    strokeOpacity = .7; 
-    strokeWidth = 5;
-    fillOpacity = .4
-  } else if ( r > 20 ) {
-    strokeOpacity = .6; 
-    strokeWidth = 4.5
-    fillOpacity = .35
-  } else if (r > 15 ) {
-    strokeOpacity = .5;
-    strokeWidth = 2.5
-    fillOpacity = .3
-  }else if (r > 10 ) {
-    strokeOpacity = .4;
-    strokeWidth = 2.2
-    fillOpacity = .25
-  }else if (r > 5 ) {
-    strokeOpacity = .3;
-    strokeWidth = 1.5
-    fillOpacity = .2
-  }else {
-    strokeOpacity = .5
-    strokeWidth = 1
-    fillOpacity = .15
-  }
-
-  var lol = function(d){
-    
-    addTriangleUp(cx, cy, r/2)
-    addTriangleDown(  cx,       cy + r/2,     r/2);     
-    addTriangleDown(  cx + r*sin30/2, cy - r*cos30/2, r/2);     
-    addTriangleDown(  cx - r*sin30/2, cy - r*cos30/2, r/2);
-
-    d3.select(this).on('mouseover', function(){});
-    d3.select(this).on('click', function(){
-      addTriangleDown(cx, cy, r);});
-  };
-
-  if (r > minR) {
-    svg.append("g")
-    .append('polygon')
-      .each( lol)
-      .attr('fill', 'white')
-      .attr('points', (cx)  +','+   (cy)  +' '+ 
-                      (cx)  +','+   (cy)  +' '+
-                      (cx)  +','+   (cy))
-      .transition()
-      .duration(600)
-      .delay(10)
-        .attr('fill', fillColor)
-        .attr('fill-opacity', fillOpacity)
-        .attr('style', 'stroke: white; stroke-width:'+ 0)
-        .attr('stroke-opacity', strokeOpacity)
-        .attr('points', (cx)      +','+   (cy+r)      +' '+ 
-                        (cx-r*sin30)  +','+   (cy - r*cos30)  +' '+
-                        (cx+r*sin30)  +','+   (cy - r*cos30))
-  }else {
-    // console.log('r < 40');
-  }
-}
-
-
+};
 
 function hexLayout() {
-    // Not sure why this needs to happen. Pretty sure its sin or cos of something. Probably should have paid more attention in math class
-    var side = s*2/3;
-    var altitude = (Math.sqrt(3))/2*side
-    // Top Half
-    addTriangleUp(width/2, height*2/3, side); // Right
-    addTriangleDown(width/2 - altitude, height/2, side);// Center
-    addTriangleUp(width/2 - altitude*2, height*2/3, side);// Left
-    // // Bottom Half
-    addTriangleDown(width/2, height*2/2, side); // Right
-    addTriangleUp(width/2 - altitude, height/2 + side*2, side);// Center
-    addTriangleDown(width/2 -2*altitude, height*2/2, side);// Left
+  // Not sure why this needs to happen. Pretty sure its sin or cos of something. Probably should have paid more attention in math class
+  var side = sideLength*2/3;
+  var altitude = ( Math.sqrt(3) )/2*side;
+
+  // Top Half
+  addTriangle( width/2,               height*2/3, side, up    );// Right
+  addTriangle( width/2 - altitude,    height/2,   side, down  );// Center
+  addTriangle( width/2 - altitude*2,  height*2/3, side, up    );// Left
+  // Bottom Half
+  addTriangle( width/2,               height*2/2,         side, down    );// Right
+  addTriangle( width/2 - altitude,    height/2 + side*2,  side, up      );// Center
+  addTriangle( width/2 - 2*altitude,  height*2/2,         side, down    );// Left
 };
+
+function redraw() {
+  console.log("here", d3.event.translate, d3.event.scale);
+  svg.attr("transform",
+    "translate(" + d3.event.translate + ")"
+    + " scale(" + d3.event.scale + ")");
+};
+
+svg.append('svg:rect')
+  .attr('width', width)
+  .attr('height', height);
 
 // Lay out hexagon
 hexLayout();
