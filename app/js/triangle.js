@@ -20,7 +20,11 @@ var up = 0;
 // Min circumradius
 var cRadiusMin = 3;
 
-//adds svg & g elements to page so zooming will work
+// Keep track of invalid attempts at making triangles (performance)
+var trianglesNotMade = 0;
+var trianglesMade = 0;
+
+// Adds svg & g elements to page so zooming will work
 var svg = d3.select("#chart")
   .append("svg:svg")
     .attr("width", width)
@@ -31,21 +35,23 @@ var svg = d3.select("#chart")
     .call(d3.behavior.zoom().on("zoom", redraw))
   .append('svg:g');
 
+// Random palettes I've made
 var metapalette = [
+  // Cave Story palette
   [ "CCDEF9", "8BA8D5", "204274", "325FA4", "193259" ],
-  [ "3F3337", "574751", "574751", "B8BDDA", "2E688D", "34A4C7" ],
-  [ "27171A", "412B31", "735D6A", "81C1C2", "E7F2F2" ],
+  // Unsplash Concert palette
   [ "7E3674", "BB418C", "FF95BC", "1C0053", "0E0041" ],
-  [ "74152C", "2B0D1E", "190915", "B89FB5", "D0E1FD" ]
+  // Cosmic Sunset palette
+  ["DB60A4", "A43191", "47035C", "F47067" ]
 ];
 
-// monochrome dark metapalette
+// monochrome dark metapalette (1043 Labs charcoal)
 // var metapalette = [
 //   ["494949", "3A3A3A","2B2B2B","4C4C4C","1C1E1D","191919"],
 //   ["2E3332", "292D2C", "212322","202322","191C1B"],
 // ];
 
-// Apple Color Palette
+// Apple Color Palette (Thanks, Andrew project)
 // var metapalette = [
 //   ["FF2D55"],//pink
 //   ["FF9500"],//orange
@@ -60,7 +66,7 @@ var metapalette = [
 // Random palette
 var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
 
-// triangle centered at (centerX, centerY) with circumradius cRadius
+// Adds triangle centered at (centerX, centerY) with circumradius 'cRadius'
 function addTriangle( centerX, centerY, cRadius, rotation ){
   var strokeOpacity = cRadius/100;
   var fillOpacity = cRadius/100;
@@ -74,11 +80,11 @@ function addTriangle( centerX, centerY, cRadius, rotation ){
     ( centerX - cRadius*sin30 )  +','+   ( centerY + cRadius*cos30 )   +' '+
     ( centerX + cRadius*sin30 )  +','+   ( centerY + cRadius*cos30 );
 
-  var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
-  var fillColor = '#' + palette[Math.floor(Math.random() * palette.length)];
+  var palette = metapalette[ Math.floor(Math.random() * metapalette.length) ];
+  var fillColor = '#' + palette[ Math.floor(Math.random() * palette.length) ];
 
   // Handles rotation value
-  var translateRotation = function( rotation ) {
+  var translateRotationPoints = function( rotation ) {
     // Right now, function only accepts 0 or 180 degrees rotation. Add full support in later.
     if ( rotation === 0 ) {
       return pointsUp;
@@ -89,7 +95,7 @@ function addTriangle( centerX, centerY, cRadius, rotation ){
     }
   };
 
-  if (cRadius > cRadiusMin ) {
+  if ( cRadius > cRadiusMin ) {
     svg.append("g")
     .append('polygon')
       .each(
@@ -107,11 +113,6 @@ function addTriangle( centerX, centerY, cRadius, rotation ){
           } else {
             console.log('Add Triangle: invalid rotation: ' + rotation );
           }
-
-          d3.select(this).on('mouseover', function(){});
-          d3.select(this).on('click', function(){
-            addTriangle( centerX, centerY, cRadius, rotation );
-          });
         }
       )
       .attr('fill', 'white')
@@ -120,16 +121,17 @@ function addTriangle( centerX, centerY, cRadius, rotation ){
                       ( centerX )  +','+   ( centerY )
       )
       .transition()
-      .duration(600)
-      .delay(10)
+      .duration(1200)
+      .delay(100)
         .attr('fill', fillColor)
         .attr('fill-opacity', fillOpacity )
         .attr('style', 'stroke: white; stroke-width:' + 0 )
         .attr('stroke-opacity', strokeOpacity )
-        .attr('points', translateRotation( rotation ) );
+        .attr('points', translateRotationPoints( rotation ) );
   } else {
-    console.log('circumradius lower than minimum');
+    trianglesNotMade++;
   }
+  trianglesMade++;
 };
 
 function hexLayout() {
@@ -138,13 +140,16 @@ function hexLayout() {
   var altitude = ( Math.sqrt(3) )/2*side;
 
   // Top Half
-  addTriangle( width/2,               height*2/3, side, up    );// Right
-  addTriangle( width/2 - altitude,    height/2,   side, down  );// Center
-  addTriangle( width/2 - altitude*2,  height*2/3, side, up    );// Left
+  addTriangle( width/1.5,               height*2/3 - height/3, side, up    );// Right
+  addTriangle( width/1.5 - altitude,    height/2 - height/3,   side, down  );// Center
+  addTriangle( width/1.5 - altitude*2,  height*2/3 - height/3, side, up    );// Left
   // Bottom Half
-  addTriangle( width/2,               height*2/2,         side, down    );// Right
-  addTriangle( width/2 - altitude,    height/2 + side*2,  side, up      );// Center
-  addTriangle( width/2 - 2*altitude,  height*2/2,         side, down    );// Left
+  addTriangle( width/1.5,               height*2/2 - height/3,         side, down    );// Right
+  addTriangle( width/1.5 - altitude,    height/2 + side*2 - height/3,  side, up      );// Center
+  addTriangle( width/1.5 - 2*altitude,  height*2/2 - height/3,         side, down    );// Left
+
+  console.log('Triangles not made: ' + trianglesNotMade);
+  console.log('Triangles made: ' + trianglesMade);
 };
 
 function redraw() {
