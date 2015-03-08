@@ -18,7 +18,7 @@ var down = 180;
 var up = 0;
 
 // Min circumradius
-var cRadiusMin = 3;
+var cRadiusMin = 5;
 
 // Keep track of invalid attempts at making triangles (performance)
 var trianglesNotMade = 0;
@@ -35,7 +35,7 @@ var svg = d3.select("#chart")
     .call(d3.behavior.zoom().on("zoom", redraw))
   .append('svg:g');
 
-// Random palettes I've made
+
 var metapalette = [
   // Cave Story palette
   [ "CCDEF9", "8BA8D5", "204274", "325FA4", "193259" ],
