@@ -2,11 +2,13 @@
 @import "../../node_modules/material-ui-sass/material-ui/_html";
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500);
 
-//Your custom app styles
+// generator styles styles
 .example-page {
   margin: auto;
   padding: 50px;
-  width: 60%;
+  width: 50vw;
+  height: 100vh;
+  background: red;
   text-align: center;
 }
 
@@ -26,4 +28,24 @@
 
 .checkbox-label {
   padding: 10px;
+}
+
+// My Styles
+.container {
+  display: flex;
+}
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  height: 100vh;
+  background-color: dimgray;
+  text-align: center;
+}
+
+.sketch-canvas {
+  width: 75vw;
+  display: flex;
+  flex-direction: column;
+  padding: 10em;
 }

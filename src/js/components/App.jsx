@@ -1,7 +1,8 @@
 const React = require('react');
 const TodoStore = require('../stores/TodoStore');
 const ActionCreator = require('../actions/TodoActionCreators');
-const TaskList = require('./TaskList.jsx');
+const ControlPanel = require('./ControlPanel.jsx');
+const SketchCanvas = require('./SketchCanvas.jsx');
 const mui = require('material-ui'),
       RaisedButton = mui.RaisedButton;
 
@@ -39,21 +40,21 @@ let App = React.createClass({
   render() {
     let {tasks} = this.state;
     return (
-      <div className="example-page">
-        <h1>Learning Flux</h1>
-        <p>
-          Below is a list of tasks you can implement to better grasp the patterns behind Flux.<br />
-          Most features are left unimplemented with clues to guide you on the learning process.
-        </p>
+      <div className="container">
+        <ControlPanel></ControlPanel>
 
-        <TaskList tasks={tasks} />
-
-        <RaisedButton label="Add Task" primary={true} onClick={this.handleAddNewClick} />
-        <RaisedButton label="Clear List" secondary={true} onClick={this.handleClearListClick} />
+        <SketchCanvas></SketchCanvas>
+        
       </div>
     );
   }
 
 });
+// Example of old component implementation.
+// <div>
+//   // <TaskList tasks={tasks} />
+//   // <RaisedButton label="Add Task" primary={true} onClick={this.handleAddNewClick} />
+//   // <RaisedButton label="Clear List" secondary={true} onClick={this.handleClearListClick} />
+// </div>
 
 module.exports = App;
