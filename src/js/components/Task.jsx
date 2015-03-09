@@ -1,3 +1,4 @@
+// Boilerplate. Kept around for example
 const React = require('react');
 const ActionCreator = require('../actions/TodoActionCreators');
 const mui = require('material-ui'),

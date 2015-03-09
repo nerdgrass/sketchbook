@@ -1,3 +1,4 @@
+// Boilerplate. Kept around for example
 const React = require('react');
 const Task = require('./Task.jsx');
 const mui = require('material-ui'),

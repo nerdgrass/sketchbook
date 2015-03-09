@@ -42,9 +42,7 @@ let App = React.createClass({
     return (
       <div className="container">
         <ControlPanel></ControlPanel>
-
         <SketchCanvas></SketchCanvas>
-        
       </div>
     );
   }
