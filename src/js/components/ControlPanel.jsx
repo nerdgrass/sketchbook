@@ -18,7 +18,7 @@ let ControlPanel = React.createClass({
   render() {
     return (
       <div className="control-panel">
-        <RaisedButton label="Draw Hexagon" primary={true} onClick={this.handleAddNewClick} />
+        <RaisedButton label="Generate" primary={true} onClick={this.handleAddNewClick} />
       </div>
     );
   }
