@@ -1,18 +1,19 @@
 const React = require('react');
-const Loader = require('react-loader');
-const SierpinskiHex = require('./SierpinskiHex.jsx')
+const ActionCreator = require('../actions/HexActionCreators');
+const d3 = require('d3');
+const HexStore = require('../stores/HexStore');
 
 let SketchCanvas = React.createClass({
-  getInitialState: function() {
-    return { loaded: false};
-  },
 
   componentDidMount: function () {
-    this.setState({ loaded: true });
+    // ActionCreator.triggerHex();
+    
+    // if (this.props.canvasClear != true ) {
+    //   ActionCreator.drawHex();
+    // }
   },
 
   onSuccess: function () {
-    //potentially not needed?
   },
 
   onError: function (err) {
@@ -22,9 +23,7 @@ let SketchCanvas = React.createClass({
   render() {
     return (
       <div className="sketch-canvas">
-        <Loader loaded={this.state.loaded}>
-          <SierpinskiHex model={this.state.profile} />
-        </Loader>
+        <div id="chart" className=""></div>
       </div>
     );
   }
