@@ -3,9 +3,17 @@ var Constants = require('../constants/AppConstants');
 
 module.exports = {
 
+  updateHexSettings: function(cRadiusNew, paletteNew) {
+    console.log('updateHexSettings called');
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.UPDATE_HEX,
+      cRadiusMin: cRadiusNew,
+      palette: paletteNew
+    });
+  },
+
   triggerHex: function(cRadiusSelected, paletteSelected) {
     console.log('triggerHex action called');
-    console.log(paletteSelected);
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.TRIGGER_HEX,
       cRadiusMin: cRadiusSelected,

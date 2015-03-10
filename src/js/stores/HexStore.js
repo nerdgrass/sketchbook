@@ -5,8 +5,8 @@ const assign = require('object-assign');
 
 // data storage
 let hexSettings = {
-  cRadiusMin: 10,
-  palette: ["DB60A4", "A43191", "47035C", "F47067" ]
+  cRadiusMin: 20,
+  palette: ["DB60A4", "A43191", "47035C", "F47067", "7E3674", "BB418C", "FF95BC", "1C0053", "0E0041"]
 };
 
 // add private functions to modify data
@@ -32,6 +32,7 @@ let HexStore = assign({}, BaseStore, {
       case Constants.ActionTypes.TRIGGER_HEX:
         let palette = action.palette;
         let cRadiusMin = action.cRadiusMin;
+        updateHexSettings(cRadiusMin, palette);
 
         // NOTE: if this action needs to wait on another store:
         // AppDispatcher.waitFor([OtherStore.dispatchToken]);
@@ -42,7 +43,8 @@ let HexStore = assign({}, BaseStore, {
 
         break;
 
-      // add more cases for other actionTypes...
+      case Constants.ActionTypes.UPDATE_HEX:
+        break;
     }
   })
 

@@ -3,7 +3,8 @@ const keyMirror = require('react/lib/keyMirror');
 module.exports = {
 
   ActionTypes: keyMirror({
-    TRIGGER_HEX: null
+    TRIGGER_HEX: null,
+    UPDATE_HEX: null
   }),
 
   ActionSources: keyMirror({
