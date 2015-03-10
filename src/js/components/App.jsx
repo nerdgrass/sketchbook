@@ -1,6 +1,4 @@
 const React = require('react');
-// const TodoStore = require('../stores/TodoStore');
-const HexStore = require('../stores/HexStore');
 const ActionCreator = require('../actions/HexActionCreators');
 const ControlPanel = require('./ControlPanel.jsx');
 const SketchCanvas = require('./SketchCanvas.jsx');
@@ -9,25 +7,8 @@ const mui = require('material-ui'),
 
 let App = React.createClass({
 
-  getInitialState() {
-    return {
-      canvasClear: true
-    };
-  },
-
-  fml() {
-    // this.setState(HexStore.getAll());
-    console.log('on change triggered');
-    ActionCreator.drawHex();
-  },
-
-  componentDidMount() {
-    HexStore.addChangeListener(this.fml);
-  },
-
-  componentWillUnmount() {
-    HexStore.removeChangeListener(this.fml);
-  },
+  // getInitialState() {
+  // },
 
   handleAddNewClick(e) {
 
@@ -38,11 +19,10 @@ let App = React.createClass({
   },
 
   render() {
-    let {canvasClear} = this.state;
     return (
       <div className="container">
         <ControlPanel></ControlPanel>
-        <SketchCanvas id="sketch-canvas" canvasClear={this.state.canvasClear}></SketchCanvas>
+        <SketchCanvas id="sketch-canvas"></SketchCanvas>
       </div>
     );
   }

@@ -3,14 +3,17 @@ var Constants = require('../constants/AppConstants');
 
 module.exports = {
 
-  triggerHex: function(text) {
+  triggerHex: function(cRadiusSelected, paletteSelected) {
     console.log('triggerHex action called');
+    console.log(paletteSelected);
     AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.TRIGGER_HEX
+      type: Constants.ActionTypes.TRIGGER_HEX,
+      cRadiusMin: cRadiusSelected,
+      palette: paletteSelected
     });
   },
 
-  drawHex: function() {
+  drawHex: function(cRadiusMin, outsidePalette) {
     d3.selectAll("svg").remove();
     // Sierpinski hex logic
     var width  =  window.innerWidth * 0.75;
@@ -31,7 +34,7 @@ module.exports = {
     var up = 0;
 
     // Min circumradius
-    var cRadiusMin = 10;
+    // var cRadiusMin = 10;
 
     // Keep track of invalid attempts at making triangles (performance)
     var trianglesNotMade = 0;
@@ -48,20 +51,21 @@ module.exports = {
         .call(d3.behavior.zoom().on("zoom", redraw))
       .append('svg:g');
 
-    var metapalette = [
-      // Cave Story palette
-      [ "CCDEF9", "8BA8D5", "204274", "325FA4", "193259" ],
-      // Unsplash Concert palette
-      [ "7E3674", "BB418C", "FF95BC", "1C0053", "0E0041" ],
-      // Cosmic Sunset palette
-      ["DB60A4", "A43191", "47035C", "F47067" ]
-    ];
+    // var metapalette = [
+    //   // Cave Story palette
+    //   [ "CCDEF9", "8BA8D5", "204274", "325FA4", "193259" ],
+    //   // Unsplash Concert palette
+    //   [ "7E3674", "BB418C", "FF95BC", "1C0053", "0E0041" ],
+    //   // Cosmic Sunset palette
+    //   ["DB60A4", "A43191", "47035C", "F47067" ]
+    // ];
+    var palette = outsidePalette;
 
     // Random palette
-    var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
+    // var palette = metapalette[Math.floor(Math.random() * metapalette.length)];
 
     // Adds triangle centered at (centerX, centerY) with circumradius 'cRadius'
-    function addTriangle( centerX, centerY, cRadius, rotation ){
+    function addTriangle( centerX, centerY, cRadius, rotation){
       var strokeOpacity = cRadius/100;
       var fillOpacity = cRadius/100;
 
@@ -74,7 +78,7 @@ module.exports = {
         ( centerX - cRadius*sin30 )  +','+   ( centerY + cRadius*cos30 )   +' '+
         ( centerX + cRadius*sin30 )  +','+   ( centerY + cRadius*cos30 );
 
-      var palette = metapalette[ Math.floor(Math.random() * metapalette.length) ];
+      // var palette = metapalette[ Math.floor(Math.random() * metapalette.length) ];
       var fillColor = '#' + palette[ Math.floor(Math.random() * palette.length) ];
 
       // Handles rotation value

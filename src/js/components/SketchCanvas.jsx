@@ -5,12 +5,18 @@ const HexStore = require('../stores/HexStore');
 
 let SketchCanvas = React.createClass({
 
-  componentDidMount: function () {
-    // ActionCreator.triggerHex();
-    
-    // if (this.props.canvasClear != true ) {
-    //   ActionCreator.drawHex();
-    // }
+  change() {
+    let settings = HexStore.getAll();
+    console.log('SketchCanvas palette: '+settings.palette);
+    ActionCreator.drawHex(settings.cRadiusMin, settings.palette);
+  },
+
+  componentDidMount() {
+    HexStore.addChangeListener(this.change);
+  },
+
+  componentWillUnmount() {
+    HexStore.removeChangeListener(this.change);
   },
 
   onSuccess: function () {
