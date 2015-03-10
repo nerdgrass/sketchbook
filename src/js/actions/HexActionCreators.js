@@ -11,6 +11,7 @@ module.exports = {
   },
 
   drawHex: function() {
+    d3.selectAll().remove();
     // Sierpinski hex logic
     var width  =  window.innerWidth * 0.75;
     var height =  (window.innerHeight || html.clientHeight    || body.clientHeight    || screen.availHeight);
