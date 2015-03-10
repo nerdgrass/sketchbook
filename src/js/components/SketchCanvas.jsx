@@ -7,7 +7,6 @@ let SketchCanvas = React.createClass({
 
   change() {
     let settings = HexStore.getAll();
-    console.log('SketchCanvas palette: '+settings.palette);
     ActionCreator.drawHex(settings.cRadiusMin, settings.palette);
   },
 
@@ -17,13 +16,6 @@ let SketchCanvas = React.createClass({
 
   componentWillUnmount() {
     HexStore.removeChangeListener(this.change);
-  },
-
-  onSuccess: function () {
-  },
-
-  onError: function (err) {
-    // error handling goes here
   },
 
   render() {

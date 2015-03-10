@@ -2,33 +2,8 @@
 @import "../../node_modules/material-ui-sass/material-ui/_html";
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500);
 
-// generator styles styles
-.example-page {
-  margin: auto;
-  padding: 50px;
-  width: 50vw;
-  height: 100vh;
-  background: red;
-  text-align: center;
-}
 
-#task-list {
-  width: 25%;
-  margin: 20px auto;
-  text-align: left;
 
-  label {
-    display: block;
-  }
-}
-
-.mui-checkbox {
-  display: inline-block;
-}
-
-.checkbox-label {
-  padding: 10px;
-}
 
 // My Styles
 .container {
@@ -50,6 +25,19 @@
   flex-direction: column;
 }
 
+#chart {
+  margin-top: 7.5vh;
+}
+
+/* Material UI Fixes */
+
+// bandaid for broken MUI dropdown arrow
 .mui-drop-down-menu {
   margin-bottom: 1.5em;
+}
+.mui-checkbox {
+  display: inline-block;
+}
+.checkbox-label {
+  padding: 10px;
 }
