@@ -4,6 +4,17 @@
   "description": "Sketchbook: A digital sketchbook for my generative art experiments",
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "d3": "^3.5.5",
+    "flux": "^2.0.1",
+    "material-ui": "^0.7.1",
+    "material-ui-sass": "^0.5.3",
+    "babel-polyfill": "^6.0.16",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-loader": "^1.2.0",
+    "react-tap-event-plugin": "^0.1.4"
+  },
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
     "babel-core": "^6.1.18",
@@ -17,30 +28,12 @@
     "webpack-dev-server": "^1.10.1"
   },
   "scripts": {
-    "start": "gulp",
-    "build": "gulp build"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
+    "start": "node server.js"
   },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "testFileExtensions": [
-      "es6",
-      "js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "es6"
-    ]
+  "engines": {
+    "node": ">=4.1",
+    "npm": ">=3.1 <4"
   },
-  "dependencies": {
-    "d3": "^3.5.5",
-    "flux": "^2.0.1",
-    "material-ui": "^0.7.1",
-    "material-ui-sass": "^0.5.3",
-    "babel-polyfill": "^6.0.16",
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3",
-    "react-loader": "^1.2.0",
-    "react-tap-event-plugin": "^0.1.4"
-  }
 }
