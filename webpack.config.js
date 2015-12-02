@@ -13,19 +13,20 @@ var webpack = require('webpack');
 // Webpack Config for web
 module.exports = {
   entry: [
-    './src/js/index',
+    './src/js/index.js',
     'webpack-dev-server/client?http://localhost:3000'
   ],
-  devtool: 'eval',
+  devtool: 'sourcemaps',
   output: {
       path: path.join(__dirname, 'dist'),
-      publicPath: '/dist/',
-      filename: 'index.js'
+      publicPath: 'dist',
+      filename: 'bundle.js'
   },
   module: {
     loaders: [
       {
         test: /\.css$/,
+        include: path.join(__dirname, 'src'),
         loader: "style!css!autoprefixer"
       },
       {
