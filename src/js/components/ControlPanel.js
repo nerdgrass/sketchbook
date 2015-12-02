@@ -1,9 +1,14 @@
-const React = require('react');
-const ActionCreator = require('../actions/HexActionCreators');
-const HexStore = require('../stores/HexStore');
-const mui = require('material-ui'),
-    RaisedButton = mui.RaisedButton,
-    DropDownMenu = mui.DropDownMenu;
+// Dependencies
+import React from 'react'
+import ActionCreator from '../actions/HexActionCreators'
+
+// Stores
+import HexStore from '../stores/HexStore'
+
+// Material UI
+import mui from 'material-ui'
+const RaisedButton = mui.RaisedButton,
+      DropDownMenu = mui.DropDownMenu
 
 let cRadiusMenuItems = [
   { payload: 20, text: 'Huge' },
@@ -21,35 +26,33 @@ let paletteMenuItems = [
 ];
 
 
-let ControlPanel = React.createClass({
-  getInitialState() {
-    return HexStore.getAll();
-  },
-
+export class ControlPanel extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = HexStore.getAll();
+  }
   handleSelectedcRadius(e, selectedIndex, menuItem) {
-    this.setState({cRadiusMin: menuItem.payload});
-  },
-
+    this.setState({cRadiusMin: menuItem.payload})
+  }
   handleSelectedPalette(e, selectedIndex, menuItem) {
-    this.setState({palette: menuItem.payload});
-  },
-
+    this.setState({palette: menuItem.payload})
+  }
   handleAddNewClick(e) {
-    ActionCreator.triggerHex(this.state.cRadiusMin, this.state.palette);
-  },
-
+    ActionCreator.triggerHex(this.state.cRadiusMin, this.state.palette)
+  }
   render() {
     return (
       <div className="control-panel">
         <h2>Sierpinski Hexagon Generator</h2>
+
         <label>Color Palette</label>
         <DropDownMenu menuItems={paletteMenuItems} onChange={this.handleSelectedPalette} />
+
         <label>Minimum Circumradius</label>
         <DropDownMenu menuItems={cRadiusMenuItems} onChange={this.handleSelectedcRadius} />
+
         <RaisedButton label="Generate" primary={true} onClick={this.handleAddNewClick} />
       </div>
-    );
+    )
   }
-});
-
-module.exports = ControlPanel;
+}

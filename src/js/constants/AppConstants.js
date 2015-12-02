@@ -1,6 +1,6 @@
-const keyMirror = require('react/lib/keyMirror');
+import { keyMirror } from 'keymirror'
 
-module.exports = {
+export const AppConstants = {
 
   ActionTypes: keyMirror({
     TRIGGER_HEX: null,
@@ -12,4 +12,4 @@ module.exports = {
     VIEW_ACTION: null
   })
 
-};
+}

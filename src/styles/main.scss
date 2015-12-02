@@ -14,15 +14,27 @@
   flex-direction: column;
   width: 25vw;
   height: 100vh;
-  background-color: dimgray;
+  background: rgb(67, 67, 67);
   text-align: center;
   padding: 3em;
+
+  h2 {
+    margin-bottom: 2em;
+    color:rgb(250, 250, 250);
+    font-weight: 300;
+  }
+  label {
+    text-align: left;
+    color:rgb(36, 36, 36);
+    margin-bottom: .5em;
+  }
 }
 
 .sketch-canvas {
   width: 75vw;
   display: flex;
   flex-direction: column;
+  background: rgb(250, 250, 250);
 }
 
 #chart {
@@ -33,7 +45,7 @@
 
 // bandaid for broken MUI dropdown arrow
 .mui-drop-down-menu {
-  margin-bottom: 1.5em;
+  margin-bottom: 3em;
 }
 .mui-checkbox {
   display: inline-block;
@@ -41,3 +53,36 @@
 .checkbox-label {
   padding: 10px;
 }
+
+// Dropdown restyling
+.mui-drop-down-menu {
+  .mui-menu-label {
+    color:rgb(189, 189, 189);
+  }
+  .mui-menu-control:hover .mui-menu-label{
+      color:rgb(66, 66, 66);
+    }
+  .mui-menu-control:hover .mui-menu-control-bg {
+    background-color: rgb(189, 189, 189);
+  }
+  .mui-menu-control:hover .mui-menu-control-underline {
+    border-top: solid 4px rgb(36, 36, 36);
+    margin: 0px;
+  }
+}
+// Generate button styling
+.mui-raised-button .mui-raised-button-container  {
+  padding: 1em 0 1em 0;
+}
+.mui-raised-button.mui-is-primary .mui-raised-button-label {
+  font-weight: 800;
+  letter-spacing:2px;
+  font-size: 16px;
+}
+
+
+
+
+
+
+
