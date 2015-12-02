@@ -5,11 +5,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "babel-polyfill": "^6.0.16",
     "d3": "^3.5.5",
     "flux": "^2.0.1",
+    "keymirror": "^0.1.1",
     "material-ui": "^0.7.1",
     "material-ui-sass": "^0.5.3",
-    "babel-polyfill": "^6.0.16",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-loader": "^1.2.0",
